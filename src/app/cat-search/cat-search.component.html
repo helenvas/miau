@@ -1,0 +1,33 @@
+<h2>Welcome to Miau!</h2>
+<div class="search">
+  <ul>
+    <li *ngFor="let catFilter of catFilters; let i = index">
+      <ul class="filter">
+        <li> {{catFilter.name}} </li>
+        <li>
+          <select (change)="filterBy(i, $event.target.value)">
+              <option label="All">All</option>
+              <option *ngFor="let filterOption of catFilter?.options" label="{{filterOption.name}}">{{filterOption.id}}</option>
+          </select>
+        </li>
+      </ul>
+    </li>
+
+  </ul>
+</div>
+<div class="clear"></div>
+<div class="results">
+  <ul>
+    <li *ngFor="let catImage of catImages">
+      <a href="{{catImage.url}}"><img src="{{catImage.url}}"></a>
+    </li>
+  </ul>
+
+  <div>
+    <ul>
+      <li (click)="paginator('previous')">PREVIOUS</li>
+      <li (click)="paginator('next')">NEXT</li>
+    </ul>
+  </div>
+
+</div>
