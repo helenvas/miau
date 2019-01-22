@@ -1,14 +1,15 @@
 export interface Breed {
-  name: string,
-  id: string,
+  name: string;
+  id: string;
 }
 
 export interface Category {
-  name: string,
-  id: number,
+  name: string;
+  id: number;
 }
 
 export interface CatImage {
-  id: string,
-  url: string,
+  id: number;
+  url: string;
+  categories: [Category];
 }

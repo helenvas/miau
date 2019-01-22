@@ -1,3 +1,11 @@
-<p>
-  image-detail works!
-</p>
+<div *ngIf="imageInfo">
+  <div *ngIf="imageInfo.categories">
+      <h3>Categories:</h3>
+      <ul>
+        <li *ngFor="let category of imageInfo.categories">{{category.name}}</li>
+      </ul>
+  </div>
+
+  <img src="{{imageInfo.url}}">
+</div>
+

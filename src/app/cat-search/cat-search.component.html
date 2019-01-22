@@ -13,20 +13,26 @@
       </ul>
     </li>
 
+    <li>
+      <span>Page Number:</span>
+      <input type="text" name="pageNumber" #pageNumber>
+      <button (click)="goToPage(pageNumber)">GO</button>
+    </li>
+
   </ul>
 </div>
-<div class="clear"></div>
+<p>Current Page = {{ currentPage }}</p>
 <div class="results">
   <ul>
     <li *ngFor="let catImage of catImages">
-      <a href="{{catImage.url}}"><img src="{{catImage.url}}"></a>
+      <a routerLink="/image/{{ catImage.id }}"><img src="{{catImage.url}}"></a>
     </li>
   </ul>
 
   <div>
     <ul>
-      <li (click)="paginator('previous')">PREVIOUS</li>
-      <li (click)="paginator('next')">NEXT</li>
+      <li><button (click)="paginator('previous')">PREVIOUS</button></li>
+      <li><button (click)="paginator('next')">NEXT</button></li>
     </ul>
   </div>
 

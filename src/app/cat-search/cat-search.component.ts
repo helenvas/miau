@@ -16,7 +16,9 @@ export class CatSearchComponent implements OnInit {
   catFilters: CatFilter[] = [];
   catImages: CatImage[] = [];
 
-  filterIndexes: [string, string] = [];
+  filterIndexes = [];
+  currentPage = 1;
+
 
   constructor(private theCatApi: TheCatAPI) { }
 
@@ -27,25 +29,28 @@ export class CatSearchComponent implements OnInit {
 
   // Filters cats by selected filters
   filterBy( filterIndex: number, option: string ) {
-    
     if (filterIndex > this.catFilters.length) {
       return
     }
     
     const currentFilter = this.catFilters[filterIndex];
 
-    this.filterIndexes[filterIndex] = option;
+    this.filterIndexes[currentFilter.name] = option;
 
-    this.catImages = []
+    this.applyFilter();
+  }
+
+  applyFilter(pageNumber: number = 1) {
+    this.catImages = [];
 
     this.theCatApi.getImages(
-      this.getOption(this.filterIndexes[0]), this.getOption(this.filterIndexes[1])
+      this.getOption(this.filterIndexes["breeds"]), this.getOption(this.filterIndexes["categories"]), pageNumber
     ).subscribe( (data: [CatImage] ) => {
       this.populateImages(data);
     });
   }
 
-  getOption( option : string ) {
+  getOption( option: string ) {
     if (option == "All") {
       return null;
     }
@@ -91,6 +96,24 @@ export class CatSearchComponent implements OnInit {
       }
       this.catFilters.push({name: "categories", options: categories});
     });
+  }
+
+  goToPage( pageNumber ) {
+    this.currentPage = pageNumber.value;
+    this.applyFilter(this.currentPage);
+  }
+
+  paginator( operation: string ) {
+
+    console.log("opertion = " + operation + " crurent page = " + this.currentPage);
+    if (operation === 'next') {
+      this.currentPage++;
+    } else if (this.currentPage > 0) {
+      this.currentPage--;
+    }
+
+    this.applyFilter(this.currentPage);
+
   }
 
 }

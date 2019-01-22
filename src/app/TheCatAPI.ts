@@ -20,37 +20,45 @@ export class TheCatAPI {
 
   private filterUrlAPI = "https://api.thecatapi.com/v1";
   private API_KEY = "8874dda0-88e5-433d-9f5c-a31363479449";
+  private httpOptions = {
+    headers: new HttpHeaders({'x-api-key': this.API_KEY})
+  };
 
   constructor(private http: HttpClient) { }
 
   // Images
   // https://docs.thecatapi.com/api-reference/images/images-search
-  getImages( breedId: string = null, categoryIds: string = null ) {
-    var httpOptions = {
-      headers: new HttpHeaders({'x-api-key': this.API_KEY})
-    };
+  getImages( breedId: string = null, categoryIds: string = null, pageNumber: number = 1 ) {
 
-    var imgUrl = `${this.filterUrlAPI}/images/search?`;
+    let imgUrl = `${this.filterUrlAPI}/images/search?`;
     
     if (breedId != null) {
-      imgUrl = `${imgUrl}breedId=${breedId}&`;
+      imgUrl = `${imgUrl}breed_id=${breedId}&`;
     }
     //TODO: enable multiple selection ?
     if (categoryIds != null) {
-      imgUrl = `${imgUrl}categoryIds=${categoryIds}&`;
+      imgUrl = `${imgUrl}category_ids=${categoryIds}&`;
     }
 
     // Additional Parameters
-    imgUrl = `${imgUrl}limit=40`;
+    imgUrl = `${imgUrl}limit=40&page=${pageNumber}`;
 
     console.log("IMAGE URL= " + imgUrl);
 
-    return this.http.get(imgUrl, httpOptions);
+    return this.http.get(imgUrl, this.httpOptions);
+  }
+
+  getImage( imageId: string ) {
+    let imgUrl = `${this.filterUrlAPI}/images/${imageId}`;
+
+    console.log(`IMAGE URL = ${imgUrl}`);
+
+    return this.http.get(imgUrl, this.httpOptions);
   }
 
   // Filters
   getBreeds() {
-    var breedUrl = `${this.filterUrlAPI}/breeds`;
+    const breedUrl = `${this.filterUrlAPI}/breeds`;
     return this.http.get(breedUrl);
   }
 
